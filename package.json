@@ -47,5 +47,13 @@
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhnh/hintput.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rhnh/hintput/issues"
+  },
+  "homepage": "https://github.com/rhnh/hintput#readme"
 }
