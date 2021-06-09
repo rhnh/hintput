@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "docs",
+    "lib": ["ES2018", "DOM"],
+    "strict": true,
+    "target": "es6",
+    "esModuleInterop": true,
+    "jsx": "react",
+    "declaration": true
+  },
+  "include": ["src"]
+}
