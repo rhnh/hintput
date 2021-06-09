@@ -1,6 +1,6 @@
 {
   "name": "hintput",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This is a simple react autocomplete",
   "main": "dist/index.js",
   "types": "dist/src/index.d.ts",
