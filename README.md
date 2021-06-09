@@ -7,6 +7,8 @@ It is a small tool, which give hint and suggestions.
 
 > npm i hintput
 
+# Example:
+https://rhnh.github.io/hintput/
 
 # Usage
 use is just like an input box.
