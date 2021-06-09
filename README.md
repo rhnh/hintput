@@ -1,5 +1,5 @@
 # Introduction
-Hint + input = Hinput
+Hint + input = Hintput
 It is a small tool, which give hint and suggestions.
 
 # Installation
