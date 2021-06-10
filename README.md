@@ -3,9 +3,9 @@ Hint + input = Hintput
 It is a small tool, which give hint and suggestions.
 
 # Installation
-> yarn add hintput
+> yarn add @ribrary/hintput
 
-> npm i hintput
+> npm i  @ribrary/hintput
 
 # Example:
 https://rhnh.github.io/hintput/

@@ -1,6 +1,6 @@
 {
-  "name": "hintput",
-  "version": "1.0.2",
+  "name": "@ribrary/hintput",
+  "version": "1.0.0",
   "description": "This is a simple react autocomplete",
   "main": "dist/index.js",
   "types": "dist/src/index.d.ts",
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel index.html"
+    "build": "rollup -c"
   },
   "keywords": [
     "hint",
@@ -39,6 +39,7 @@
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-typescript2": "^0.30.0",
     "style-loader": "^2.0.0",
     "ts-loader": "^9.2.3",
     "tslib": "^2.2.0",
