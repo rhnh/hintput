@@ -35,7 +35,7 @@ export function Hintput({
   handleChange,
   placeholder,
   numberOfSuggestions = 5,
-  inputName,
+  name,
 }: IHintput): React.ReactElement {
   const [hint, setHint] = useState("");
   const [text, setText] = useState("");
@@ -143,7 +143,7 @@ export function Hintput({
       setSuggestions={setSuggestions}
       tabbed={tabbed}
       placeholder={placeholder || ""}
-      inputName={inputName || ""}
+      inputName={name || ""}
     />
   );
 }
