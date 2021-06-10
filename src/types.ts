@@ -15,7 +15,7 @@ export interface IHintDisplay {
 }
 
 export interface IHintput {
-  name: string;
+  inputName: string;
   placeholder?: string;
   items: string[];
   numberOfSuggestions?: number;
