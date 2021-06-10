@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import HintDisplay from "./HintDisplay";
+import { IHintput } from "./types";
 import "./index.css";
 /**
  *
@@ -9,14 +10,25 @@ import "./index.css";
  * @param - name for the name and id of input box and label
  * @returns - Returns a react component
  */
-interface Types {
-  name: string;
-  placeholder?: string;
-  items: string[];
-  numberOfSuggestions?: number;
-  handleBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+
+//removes duplicate and find and sort
+const findAndSort = (items: string[], text: string): string[] =>
+  Array.from(new Set(items))
+    .filter((item) =>
+      Object.values(item)
+        .join("")
+        .trim()
+        .toLowerCase()
+        .includes(text.toLowerCase())
+    )
+    .sort((a: string, b: string) => b.localeCompare(a))
+    .sort((a: string, b: string) => {
+      if (a.length > b.length) {
+        return 1;
+      } else if (a.length < b.length) {
+        return -1;
+      } else return 0;
+    });
 export function Hintput({
   items,
   handleBlur,
@@ -24,146 +36,114 @@ export function Hintput({
   placeholder,
   numberOfSuggestions = 5,
   name,
-}: Types): React.ReactElement {
+}: IHintput): React.ReactElement {
   const [hint, setHint] = useState("");
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [tabbed, setTabbed] = useState(false);
+
   useEffect(() => {
     if (text === "") {
       return;
     }
-    if (text.length > 1) {
-      const copyOfText = text;
-      const noDuplicate = Array.from(new Set(items));
-      const suggests = noDuplicate.filter((item) =>
-        Object.values(item).join("").toLowerCase().includes(text.toLowerCase())
-      );
-
-      const hint = suggests[0]?.toLowerCase().indexOf(text.toLowerCase());
-      if (hint >= 0) setHint(suggests[0]?.toLowerCase());
-      //match the query in the middle ?
-      const restHint = suggests[0]?.substr(0, hint);
-      if (restHint) {
-        setText(restHint + text);
+    if (text.length > 2) {
+      const hintArray = findAndSort(items, text);
+      //hint = 0 => don't show suggestions
+      if (hintArray.length <= 0) {
+        setHint("");
+        setSuggestions([]);
       }
-
-      const filtered = noDuplicate.filter((item) =>
-        Object.values(item)
-          .join("")
-          .toLowerCase()
-          .includes(copyOfText.toLowerCase())
-      );
-      setSuggestions(filtered.slice(1, numberOfSuggestions));
+      //hint = 1 => don't show suggestions
+      if (hintArray.length === 1) {
+        const hintIndex = hintArray[0]
+          ?.toLowerCase()
+          .indexOf(text.toLowerCase());
+        if (hintIndex === 0) {
+          setHint(hintArray[0].toLowerCase());
+        } else if (hintIndex > 0) {
+          const restHint = hintArray[0]?.substr(0, hintIndex);
+          if (restHint) {
+            setText(restHint + text);
+          }
+        }
+        setSuggestions([]);
+      }
+      /**
+       * hint > 1,
+       * if(hint matched at beginning) just show the hint and remove it from suggestions
+       * if(hint matched at last) don't show hint, and don't remove it from suggestions
+       * if(hint matched in the middle) do show the hint, and remove it from suggestions
+       */
+      if (hintArray.length > 1) {
+        const firstMatch = hintArray[0];
+        const hintIndex = firstMatch?.toLowerCase().indexOf(text.toLowerCase());
+        if (hintIndex === 0) {
+          setHint(firstMatch.toLowerCase());
+        } else if (hintIndex > 0) {
+          const isLastWord = firstMatch.split(" ").slice(-1).join(""); //get the last word
+          if (isLastWord) {
+            return setSuggestions(hintArray.slice(0, numberOfSuggestions));
+          }
+          const hintBegging = firstMatch.substr(0, hintIndex);
+          const completedWord = hintBegging + text;
+          setHint(completedWord);
+        }
+        setSuggestions(hintArray.slice(1, numberOfSuggestions));
+      }
     }
-  }, [items, text]);
+  }, [hint, items, numberOfSuggestions, text]);
   const handleBlurInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setText(value);
+
     handleBlur(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.code === "Backspace") {
       setHint("");
+      setText("");
+      setSuggestions([]);
     }
-    if (e.code === "Tab" && suggestions.length <= 0) {
-      setText(hint);
-      setHint("");
+    if (e.code === "Tab") {
+      if (suggestions.length <= 0) {
+        if (hint) setText(hint);
+        setHint("");
+      }
     }
     if (e.code === "Enter") {
-      setText(hint);
+      if (hint) setText(hint);
+      setHint("");
+      setSuggestions([]);
+      setTabbed(false);
+    }
+    if (e.shiftKey && e.code === "Tab") {
+      setHint("");
+      setSuggestions([]);
+      setTabbed(false);
     }
   };
 
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
-    setText(value);
+    setText(value.trim().toLowerCase());
+    setTabbed(true);
     handleChange(e);
   };
 
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  const innerStyle = {
-    background: "transparent",
-    border: "none",
-    ":selected, :focused": {
-      border: "none",
-      outline: "1px solid blue",
-    },
-  };
   return (
-    <span
-      style={{
-        position: "relative",
-        padding: 0,
-        margin: 0,
-        display: "inline-block",
-      }}
-    >
-      <input
-        ref={inputRef}
-        className="hint"
-        type="text"
-        name={name}
-        id={name}
-        placeholder={placeholder}
-        value={text.toLowerCase()}
-        onChange={handleChangeInside}
-        onBlur={handleBlurInside}
-        onKeyDown={handleKeyDown}
-        tabIndex={suggestions.length > 0 ? 1 : 0}
-        style={{ color: "#000000" }}
-      />
-
-      <span
-        style={{
-          display: "flex",
-          pointerEvents: "none",
-          backgroundColor: "transparent",
-          borderColor: "transparent",
-          boxSizing: "border-box",
-          color: "rgba(0, 0, 0, 0.35)",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <input
-          value={hint}
-          className="hint "
-          id="#hint"
-          style={{
-            color: "rgba(0, 0, 0, 0.30)",
-            caretColor: "transparent",
-            backgroundColor: "transparent",
-            outline: "none",
-          }}
-          disabled
-          tabIndex={-1}
-        />
-      </span>
-      {suggestions.length > 0 && (
-        <span id="suggestion-ul" style={{ display: "table" }}>
-          {suggestions.map((suggestion, i) => (
-            <span key={i} style={{ display: "block" }}>
-              <button
-                onClick={() => {
-                  setText("");
-                  setText(suggestion);
-                  inputRef.current?.focus();
-                  setSuggestions([]);
-                }}
-                tabIndex={i + 2}
-                style={innerStyle}
-              >
-                {suggestion}
-              </button>
-            </span>
-          ))}
-        </span>
-      )}
-    </span>
+    <HintDisplay
+      text={text}
+      setText={setText}
+      hint={hint}
+      handleBlur={handleBlurInside}
+      handleChange={handleChangeInside}
+      handleKeyDown={handleKeyDown}
+      suggestions={suggestions}
+      setSuggestions={setSuggestions}
+      tabbed={tabbed}
+      placeholder={placeholder || ""}
+      inputName={name || ""}
+    />
   );
 }
