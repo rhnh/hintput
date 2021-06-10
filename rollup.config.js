@@ -3,6 +3,7 @@ import external from "rollup-plugin-peer-deps-external";
 import babel from "rollup-plugin-babel";
 import typescript from "rollup-plugin-typescript2";
 import postcss from "rollup-plugin-postcss";
+import { terser } from "rollup-plugin-terser";
 export default [
   {
     input: "./src/index.tsx",
@@ -28,6 +29,7 @@ export default [
       postcss({
         plugins: [],
       }),
+      terser(),
     ],
   },
 ];

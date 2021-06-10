@@ -6,7 +6,9 @@
     "target": "es6",
     "esModuleInterop": true,
     "jsx": "react",
-    "declaration": true
+    "declaration": true,
+    "module": "es6",
+    "declarationDir": "./dist"
   },
   "include": ["src"]
 }
