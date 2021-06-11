@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import HintDisplay from "./HintDisplay";
 import { IHintput } from "./types";
 import "./index.css";
+import { findAndSort } from "./utils";
 /**
  *
  * @param  - items: array of strings
@@ -10,25 +11,6 @@ import "./index.css";
  * @param - name for the name and id of input box and label
  * @returns - Returns a react component
  */
-
-//removes duplicate and find and sort
-const findAndSort = (items: string[], text: string): string[] =>
-  Array.from(new Set(items))
-    .filter((item) =>
-      Object.values(item)
-        .join("")
-        .trim()
-        .toLowerCase()
-        .includes(text.toLowerCase())
-    )
-    .sort((a: string, b: string) => b.localeCompare(a))
-    .sort((a: string, b: string) => {
-      if (a.length > b.length) {
-        return 1;
-      } else if (a.length < b.length) {
-        return -1;
-      } else return 0;
-    });
 export function Hintput({
   items,
   handleBlur,
@@ -95,8 +77,7 @@ export function Hintput({
   const handleBlurInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setText(value);
-
-    handleBlur(e);
+    if (typeof handleBlur === "function") handleBlur(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -128,7 +109,7 @@ export function Hintput({
     const { value } = e.target as HTMLInputElement;
     setText(value.trim().toLowerCase());
     setTabbed(true);
-    handleChange(e);
+    if (typeof handleChange === "function") handleChange(e);
   };
 
   return (

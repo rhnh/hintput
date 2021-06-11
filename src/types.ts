@@ -19,6 +19,6 @@ export interface IHintput {
   placeholder?: string;
   items: string[];
   numberOfSuggestions?: number;
-  handleBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
