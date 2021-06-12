@@ -82,6 +82,7 @@ export function Hintput({
   const handleBlurInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setText(value);
+    setHint("");
     if (typeof handleBlur === "function") handleBlur(e);
   };
 

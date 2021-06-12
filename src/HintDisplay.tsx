@@ -52,7 +52,7 @@ export default function HintDisplay({
           ...customStyle,
           width: "100%",
           color: "#000000",
-          border: "none",
+          borderWidth: "1px",
         }}
       />
 
