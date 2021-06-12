@@ -11,6 +11,9 @@ import { findAndSort } from "./utils";
  * @param - name for the name and id of input box and label
  * @returns - Returns a react component
  */
+
+//removes duplicate and find and sort
+
 export function Hintput({
   items,
   handleBlur,
@@ -18,6 +21,8 @@ export function Hintput({
   placeholder,
   numberOfSuggestions = 5,
   name,
+  className = "",
+  style,
 }: IHintput): React.ReactElement {
   const [hint, setHint] = useState("");
   const [text, setText] = useState("");
@@ -125,6 +130,8 @@ export function Hintput({
       tabbed={tabbed}
       placeholder={placeholder || ""}
       inputName={name || ""}
+      customClass={className}
+      customStyle={style}
     />
   );
 }

@@ -6,6 +6,10 @@ export interface IHintDisplay {
   text: string;
   hint: string;
   tabbed: boolean;
+  customClass?: string;
+  customStyle?: {
+    [x: string]: string;
+  };
   suggestions: string[];
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -18,7 +22,11 @@ export interface IHintput {
   name: string;
   placeholder?: string;
   items: string[];
+  className?: string;
   numberOfSuggestions?: number;
+  style?: {
+    [x: string]: string;
+  };
   handleBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

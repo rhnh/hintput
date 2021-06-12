@@ -11,6 +11,8 @@ export default function HintDisplay({
   handleBlur,
   handleChange,
   handleKeyDown,
+  customClass,
+  customStyle,
   setSuggestions,
   setText,
 }: IHintDisplay) {
@@ -31,11 +33,12 @@ export default function HintDisplay({
         padding: 0,
         margin: 0,
         display: "inline-block",
+        width: "100%",
       }}
     >
       <input
         ref={inputRef}
-        className="hint"
+        className={`${customClass} hint`}
         type="text"
         name={inputName}
         id={inputName}
@@ -45,11 +48,13 @@ export default function HintDisplay({
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         tabIndex={suggestions.length > 0 ? 1 : 0}
-        style={{ color: "#000000" }}
+        style={{ ...customStyle, color: "#000000" }}
       />
 
       <span
+        className={`${customClass} `}
         style={{
+          ...customStyle,
           display: "flex",
           pointerEvents: "none",
           backgroundColor: "transparent",
@@ -65,9 +70,10 @@ export default function HintDisplay({
       >
         <input
           value={hint}
-          className="hint "
+          className={`${customClass} hint`}
           id="#hint"
           style={{
+            ...customStyle,
             color: "rgba(0, 0, 0, 0.30)",
             caretColor: "transparent",
             backgroundColor: "transparent",
