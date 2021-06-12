@@ -25,6 +25,8 @@ You need to function, if you want to retrieve the value of input
           handleChange={handleChange}
           handleBlur={handleBlur}
           numberOfSuggestions={3} //optional
+          style={{color:'green'}} //optional {border ould mess with the size }
+          className='my-custom-css' //optional  {border could mess with the size }
         />
 </p>
 ```
