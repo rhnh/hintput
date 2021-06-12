@@ -17,7 +17,7 @@ export default function HintDisplay({
   setText,
 }: IHintDisplay) {
   const inputRef = React.useRef<HTMLInputElement>(null);
-
+  const { width } = customStyle || {};
   const innerStyle = {
     background: "transparent",
     border: "none",
@@ -33,7 +33,7 @@ export default function HintDisplay({
         padding: 0,
         margin: 0,
         display: "inline-block",
-        width: "100%",
+        width,
       }}
     >
       <input
@@ -48,7 +48,12 @@ export default function HintDisplay({
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         tabIndex={suggestions.length > 0 ? 1 : 0}
-        style={{ ...customStyle, color: "#000000" }}
+        style={{
+          ...customStyle,
+          width: "100%",
+          color: "#000000",
+          border: "none",
+        }}
       />
 
       <span
@@ -65,7 +70,9 @@ export default function HintDisplay({
           top: 0,
           left: 0,
           justifyContent: "flex-end",
-          alignItems: "center",
+          alignItems: "stretch",
+          border: "none",
+          width: "100%",
         }}
       >
         <input
@@ -78,6 +85,8 @@ export default function HintDisplay({
             caretColor: "transparent",
             backgroundColor: "transparent",
             outline: "none",
+            width: "100%",
+            border: "none",
           }}
           disabled
           tabIndex={-1}
