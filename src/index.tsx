@@ -123,7 +123,6 @@ export function Hintput({
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
     setHide(true);
-    console.log(value);
     setText(value.trim().toLowerCase());
     setTabbed(true);
     if (typeof handleChange === "function") handleChange(e);
