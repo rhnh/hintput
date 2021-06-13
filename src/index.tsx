@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import HintDisplay from "./HintDisplay";
 import { IHintput } from "./types";
 import "./index.css";
 import { findAndSort } from "./utils";
@@ -28,7 +27,7 @@ export function Hintput({
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [tabbed, setTabbed] = useState(false);
-
+  const [hide, setHide] = useState(false);
   useEffect(() => {
     if (text === "") {
       return;
@@ -79,10 +78,12 @@ export function Hintput({
       }
     }
   }, [hint, items, numberOfSuggestions, text]);
+
   const handleBlurInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setText(value);
     setHint("");
+    setHide(false);
     if (typeof handleBlur === "function") handleBlur(e);
   };
 
@@ -110,29 +111,118 @@ export function Hintput({
       setTabbed(false);
     }
   };
-
+  const innerStyle = {
+    background: "transparent",
+    border: "none",
+    ":selected, :focused": {
+      border: "none",
+      outline: "1px solid blue",
+    },
+  };
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
+    setHide(true);
+    console.log(value);
     setText(value.trim().toLowerCase());
     setTabbed(true);
     if (typeof handleChange === "function") handleChange(e);
   };
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRefHidden = React.useRef<HTMLInputElement>(null);
+  const { width } = style || {};
 
   return (
-    <HintDisplay
-      text={text}
-      setText={setText}
-      hint={hint}
-      handleBlur={handleBlurInside}
-      handleChange={handleChangeInside}
-      handleKeyDown={handleKeyDown}
-      suggestions={suggestions}
-      setSuggestions={setSuggestions}
-      tabbed={tabbed}
-      placeholder={placeholder || ""}
-      inputName={name || ""}
-      customClass={className}
-      customStyle={style}
-    />
+    <span
+      style={{
+        position: "relative",
+        padding: 0,
+        margin: 0,
+        display: "inline-block",
+        width,
+      }}
+    >
+      <input
+        ref={inputRef}
+        className={`${className} hint`}
+        type="text"
+        name={name}
+        id={name}
+        placeholder={placeholder}
+        value={text.toLowerCase()}
+        onChange={handleChangeInside}
+        onBlur={handleBlurInside}
+        onKeyDown={handleKeyDown}
+        tabIndex={suggestions.length > 0 ? 1 : 0}
+        style={{
+          border: "1px solid black",
+          ...style,
+          width: "100%",
+          color: "#000000",
+          borderWidth: "1px",
+        }}
+      />
+      {hide && (
+        <span
+          className={`${className} `}
+          ref={inputRefHidden}
+          style={{
+            ...style,
+            display: "flex",
+            pointerEvents: "none",
+            backgroundColor: "transparent",
+            borderColor: "transparent",
+            boxSizing: "border-box",
+            color: "rgba(0, 0, 0, 0.35)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            justifyContent: "flex-end",
+            alignItems: "stretch",
+            border: "none",
+            width: "100%",
+            outlineStyle: "none",
+            margin: "none",
+          }}
+        >
+          <input
+            value={hint}
+            className={`${className} hint`}
+            id="#hint"
+            style={{
+              ...style,
+              color: "rgba(0, 0, 0, 0.30)",
+              caretColor: "transparent",
+              backgroundColor: "transparent",
+              outline: "none",
+              width: "100%",
+              border: "none",
+              outlineStyle: "none",
+            }}
+            disabled
+            tabIndex={-1}
+          />
+        </span>
+      )}
+      {tabbed && suggestions.length > 0 && (
+        <span id="suggestion-ul" style={{ display: "table" }}>
+          {suggestions.map((suggestion, i) => (
+            <span key={i} style={{ display: "block" }}>
+              <button
+                onClick={() => {
+                  setText("");
+                  setText(suggestion);
+                  inputRef.current?.focus();
+                  setSuggestions([]);
+                }}
+                tabIndex={i + 2}
+                style={innerStyle}
+              >
+                {suggestion}
+              </button>
+            </span>
+          ))}
+        </span>
+      )}
+    </span>
   );
 }
