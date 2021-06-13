@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import HintDisplay from './HintDisplay'
 import { IHintput } from "./types";
 import "./index.css";
 import { findAndSort } from "./utils";
@@ -182,6 +183,7 @@ export function Hintput({
             width: "100%",
             outlineStyle: "none",
             margin: "none",
+            padding: 0,
           }}
         >
           <input
