@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import HintDisplay from './HintDisplay'
 import { IHintput } from "./types";
 import "./index.css";
 import { findAndSort } from "./utils";
@@ -29,11 +28,14 @@ export function Hintput({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [tabbed, setTabbed] = useState(false);
   const [hide, setHide] = useState(false);
+  const [found, setFound] = useState(true);
+  const [originalText, setOriginalText] = useState("");
   useEffect(() => {
     if (text === "") {
       return;
     }
-    if (text.length > 2) {
+
+    if (text.length > 2 && found) {
       const hintArray = findAndSort(items, text);
       //hint = 0 => don't show suggestions
       if (hintArray.length <= 0) {
@@ -78,21 +80,31 @@ export function Hintput({
         setSuggestions(hintArray.slice(1, numberOfSuggestions));
       }
     }
-  }, [hint, items, numberOfSuggestions, text]);
+  }, [found, hint, items, numberOfSuggestions, text]);
 
   const handleBlurInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setText(value);
     setHint("");
     setHide(false);
+    setOriginalText("");
     if (typeof handleBlur === "function") handleBlur(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key.length === 1) {
+      const alphaNum = /[a-z]|[0|9]|\s/;
+      if (alphaNum.test(e.key)) setOriginalText((re) => re + e.key);
+    }
+
     if (e.code === "Backspace") {
       setHint("");
-      setText("");
+      setHint("");
+      setText(originalText);
+      setOriginalText("");
       setSuggestions([]);
+      setHide(false);
+      setFound(false);
     }
     if (e.code === "Tab") {
       if (suggestions.length <= 0) {
@@ -122,8 +134,11 @@ export function Hintput({
   };
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
+    if (text.length === 0) {
+      setFound(true);
+    }
     setHide(true);
-    setText(value.trim().toLowerCase());
+    setText(value.toLowerCase());
     setTabbed(true);
     if (typeof handleChange === "function") handleChange(e);
   };
@@ -162,48 +177,90 @@ export function Hintput({
         }}
       />
       {hide && (
-        <span
-          className={`${className} `}
-          ref={inputRefHidden}
-          style={{
-            ...style,
-            display: "flex",
-            pointerEvents: "none",
-            backgroundColor: "transparent",
-            borderColor: "transparent",
-            boxSizing: "border-box",
-            color: "rgba(0, 0, 0, 0.35)",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            justifyContent: "flex-end",
-            alignItems: "stretch",
-            border: "none",
-            width: "100%",
-            outlineStyle: "none",
-            margin: "none",
-            padding: 0,
-          }}
-        >
-          <input
-            value={hint}
-            className={`${className} hint`}
-            id="#hint"
+          <span
+            className={`${className} `}
+            ref={inputRefHidden}
             style={{
               ...style,
-              color: "rgba(0, 0, 0, 0.30)",
-              caretColor: "transparent",
+              display: "flex",
+              pointerEvents: "none",
               backgroundColor: "transparent",
-              outline: "none",
-              width: "100%",
+              borderColor: "transparent",
+              boxSizing: "border-box",
+              color: "rgba(0, 0, 0, 0.35)",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              justifyContent: "flex-end",
+              alignItems: "stretch",
               border: "none",
+              width: "100%",
               outlineStyle: "none",
+              margin: "none",
+              padding: 0,
             }}
-            disabled
-            tabIndex={-1}
-          />
-        </span>
-      )}
+          >
+            <input
+              value={hint}
+              className={`${className} hint`}
+              id="#hint"
+              style={{
+                ...style,
+                color: "black",
+                caretColor: "transparent",
+                backgroundColor: "transparent",
+                outline: "none",
+                width: "100%",
+                border: "none",
+                outlineStyle: "none",
+              }}
+              disabled
+              tabIndex={-1}
+            />
+          </span>
+        ) && (
+          <span
+            className={`${className} `}
+            ref={inputRefHidden}
+            style={{
+              ...style,
+              display: "flex",
+              pointerEvents: "none",
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+              boxSizing: "border-box",
+              color: "rgba(0, 0, 0, 0.35)",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              justifyContent: "flex-end",
+              alignItems: "stretch",
+              border: "none",
+              width: "100%",
+              outlineStyle: "none",
+              margin: "none",
+              padding: 0,
+            }}
+          >
+            <input
+              value={hint}
+              className={`${className} hint`}
+              id="#hint"
+              style={{
+                ...style,
+                color: "rgba(0, 0, 0, 0.30)",
+                caretColor: "transparent",
+                backgroundColor: "transparent",
+                outline: "none",
+                width: "100%",
+                border: "none",
+                outlineStyle: "none",
+              }}
+              disabled
+              tabIndex={-1}
+            />
+          </span>
+        )}
       {tabbed && suggestions.length > 0 && (
         <span id="suggestion-ul" style={{ display: "table" }}>
           {suggestions.map((suggestion, i) => (
