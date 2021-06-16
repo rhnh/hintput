@@ -1,6 +1,10 @@
 # Introduction
-Hint + input  = Hintput
-It is a small tool, which give hints
+> It is an enhanced input field
+
+> In other words: It is a small input field, which give hints and suggestions
+
+> Hints + input  = Hintput
+
 
 # Installation
 > yarn add @ribrary/hintput
