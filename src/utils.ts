@@ -1,5 +1,6 @@
 export const findAndSort = (items: string[], text: string): string[] =>
   Array.from(new Set(items))
+    .filter((d) => d) // remove undefined
     .filter((item) =>
       Object.values(item)
         .join("")
