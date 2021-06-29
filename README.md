@@ -22,14 +22,14 @@ You need to function, if you want to retrieve the value of input
   const items = ['james','john doe', 'jane doe'];
   <p>
         <label htmlFor="favorite">Favorites: </label>
-        <Hinput
+        <Hintput
           placeholder="favorite" //optional
           name="favorite"
           items={items}
           handleChange={handleChange}
           handleBlur={handleBlur}
           numberOfSuggestions={3} //optional
-          style={{color:'green',      
+          style={{color:'green',      //optional
            width: '100%', //optional
             fontSize: '30px', //optional
             borderStyle: 'dashed', //optional
