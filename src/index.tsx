@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { IHintput } from "./types";
 import "./index.css";
 import { findAndSort } from "./utils";
+
 /**
  *
  * @param  - items: array of strings
@@ -11,9 +12,9 @@ import { findAndSort } from "./utils";
  * @returns - Returns a react component
  */
 
-//removes duplicate and find and sort
-
-export function Hintput({
+export const Hintput: FC<
+  IHintput & React.InputHTMLAttributes<HTMLInputElement>
+> = ({
   items,
   handleBlur,
   handleChange,
@@ -22,7 +23,7 @@ export function Hintput({
   name,
   className = "",
   style,
-}: IHintput): React.ReactElement {
+}: IHintput): React.ReactElement => {
   const [hint, setHint] = useState("");
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -283,4 +284,4 @@ export function Hintput({
       )}
     </span>
   );
-}
+};
