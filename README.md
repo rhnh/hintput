@@ -26,8 +26,8 @@ You need to function, if you want to retrieve the value of input
           placeholder="favorite" //optional
           name="favorite"
           items={items}
-          handleChange={handleChange}
-          handleBlur={handleBlur}
+          onChange={handleChange}
+          onChange={handleBlur}
           numberOfSuggestions={3} //optional
           style={{color:'green',      //optional
            width: '100%', //optional
@@ -48,8 +48,8 @@ An example for regular ```html<input type='text' />```
           placeholder="favorite"
           name="favorite"
           items={items}
-          handleChange={handleChange}
-          handleBlur={handleBlur}
+          onChange={handleChange}
+          onBlur={handleBlur}
           numberOfSuggestions={3}
         />
   </p>
