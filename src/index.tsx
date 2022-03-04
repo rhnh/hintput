@@ -1,7 +1,8 @@
 import React, { useState, useEffect, FC } from "react";
+
+import "./hintput.css";
+import { findAndSort } from "utils";
 import { IHintput } from "./types";
-import "./index.css";
-import { findAndSort } from "./utils";
 
 /**
  *
@@ -12,15 +13,17 @@ import { findAndSort } from "./utils";
  * @returns - Returns a react component
  */
 
+//removes duplicate and find and sort
+
 export const Hintput: FC<
   IHintput & React.InputHTMLAttributes<HTMLInputElement>
 > = ({
   items,
-  handleBlur,
-  handleChange,
   placeholder,
   numberOfSuggestions = 5,
   name,
+  onChange,
+  onBlur,
   className = "",
   style,
 }: IHintput): React.ReactElement => {
@@ -89,7 +92,7 @@ export const Hintput: FC<
     setHint("");
     setHide(false);
     setOriginalText("");
-    if (typeof handleBlur === "function") handleBlur(e);
+    if (typeof onBlur === "function") onBlur(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -112,12 +115,17 @@ export const Hintput: FC<
         if (hint) setText(hint);
         setHint("");
       }
+      setTabbed(true);
     }
     if (e.code === "Enter") {
-      if (hint) setText(hint);
+      if (hint) {
+        setText(hint);
+      }
       setHint("");
       setSuggestions([]);
       setTabbed(false);
+
+      console.log(text);
     }
     if (e.shiftKey && e.code === "Tab") {
       setHint("");
@@ -135,13 +143,17 @@ export const Hintput: FC<
   };
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
+
     if (text.length === 0) {
       setFound(true);
     }
     setHide(true);
     setText(value.toLowerCase());
     setTabbed(true);
-    if (typeof handleChange === "function") handleChange(e);
+
+    if (typeof onChange === "function") {
+      onChange(e);
+    }
   };
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inputRefHidden = React.useRef<HTMLInputElement>(null);

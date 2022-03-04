@@ -27,6 +27,6 @@ export interface IHintput {
   style?: {
     [x: string]: string;
   };
-  handleBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
