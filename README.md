@@ -29,6 +29,7 @@ You need to function, if you want to retrieve the value of input
           onChange={handleChange}
           onChange={handleBlur}
           numberOfSuggestions={3} //optional
+          hintColor="rgba(0,0,0,0.20)" //optional
           style={{color:'green',      //optional
            width: '100%', //optional
             fontSize: '30px', //optional

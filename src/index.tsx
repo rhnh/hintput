@@ -1,23 +1,15 @@
 import React, { useState, useEffect, FC } from "react";
 
 import "./hintput.css";
-import { findAndSort } from "utils";
-import { IHintput } from "./types";
+import { findAndSort } from "./utils";
 
-/**
- *
- * @param  - items: array of strings
- * @param - handleBlur: takes an event object and fire action onBlur
- * @param - handleChange: takes an event object and fire action onChange
- * @param - name for the name and id of input box and label
- * @returns - Returns a react component
- */
+export interface IHintput {
+  items: string[];
+  numberOfSuggestions: number;
+  hintColor?: string;
+}
 
-//removes duplicate and find and sort
-
-export const Hintput: FC<
-  IHintput & React.InputHTMLAttributes<HTMLInputElement>
-> = ({
+const Hintput: FC<IHintput & React.InputHTMLAttributes<HTMLInputElement>> = ({
   items,
   placeholder,
   numberOfSuggestions = 5,
@@ -26,7 +18,10 @@ export const Hintput: FC<
   onBlur,
   className = "",
   style,
-}: IHintput): React.ReactElement => {
+  hintColor,
+  ...props
+}: IHintput &
+  React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement => {
   const [hint, setHint] = useState("");
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -34,6 +29,9 @@ export const Hintput: FC<
   const [hide, setHide] = useState(false);
   const [found, setFound] = useState(true);
   const [originalText, setOriginalText] = useState("");
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRefHidden = React.useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (text === "") {
       return;
@@ -86,7 +84,7 @@ export const Hintput: FC<
     }
   }, [found, hint, items, numberOfSuggestions, text]);
 
-  const handleBlurInside = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBlurInside = (e: React.FocusEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setText(value);
     setHint("");
@@ -120,12 +118,11 @@ export const Hintput: FC<
     if (e.code === "Enter") {
       if (hint) {
         setText(hint);
+        // inputRef?.current?.blur();
       }
       setHint("");
       setSuggestions([]);
       setTabbed(false);
-
-      console.log(text);
     }
     if (e.shiftKey && e.code === "Tab") {
       setHint("");
@@ -138,7 +135,7 @@ export const Hintput: FC<
     border: "none",
     ":selected, :focused": {
       border: "none",
-      outline: "1px solid blue",
+      outline: "1px solid black",
     },
   };
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,9 +152,6 @@ export const Hintput: FC<
       onChange(e);
     }
   };
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const inputRefHidden = React.useRef<HTMLInputElement>(null);
-  const { width } = style || {};
 
   return (
     <span
@@ -166,7 +160,6 @@ export const Hintput: FC<
         padding: 0,
         margin: 0,
         display: "inline-block",
-        width,
       }}
     >
       <input
@@ -175,6 +168,7 @@ export const Hintput: FC<
         type="text"
         name={name}
         id={name}
+        {...props}
         placeholder={placeholder}
         value={text.toLowerCase()}
         onChange={handleChangeInside}
@@ -185,7 +179,6 @@ export const Hintput: FC<
           border: "1px solid black",
           ...style,
           width: "100%",
-          color: "#000000",
           borderWidth: "1px",
         }}
       />
@@ -194,13 +187,12 @@ export const Hintput: FC<
             className={`${className} `}
             ref={inputRefHidden}
             style={{
-              ...style,
               display: "flex",
               pointerEvents: "none",
               backgroundColor: "transparent",
               borderColor: "transparent",
               boxSizing: "border-box",
-              color: "rgba(0, 0, 0, 0.35)",
+              color: hintColor ?? "rgba(0, 0, 0, 0.99)",
               position: "absolute",
               top: 0,
               left: 0,
@@ -209,6 +201,7 @@ export const Hintput: FC<
               border: "none",
               width: "100%",
               outlineStyle: "none",
+              ...style,
               margin: "none",
               padding: 0,
             }}
@@ -219,7 +212,6 @@ export const Hintput: FC<
               id="#hint"
               style={{
                 ...style,
-                color: "black",
                 caretColor: "transparent",
                 backgroundColor: "transparent",
                 outline: "none",
@@ -227,6 +219,7 @@ export const Hintput: FC<
                 border: "none",
                 outlineStyle: "none",
               }}
+              {...props}
               disabled
               tabIndex={-1}
             />
@@ -242,7 +235,7 @@ export const Hintput: FC<
               backgroundColor: "transparent",
               borderColor: "transparent",
               boxSizing: "border-box",
-              color: "rgba(0, 0, 0, 0.35)",
+              color: hintColor ?? "rgba(0, 0, 0, 0.35)",
               position: "absolute",
               top: 0,
               left: 0,
@@ -260,14 +253,14 @@ export const Hintput: FC<
               className={`${className} hint`}
               id="#hint"
               style={{
-                ...style,
-                color: "rgba(0, 0, 0, 0.30)",
                 caretColor: "transparent",
                 backgroundColor: "transparent",
                 outline: "none",
+                ...style,
                 width: "100%",
                 border: "none",
                 outlineStyle: "none",
+                color: hintColor ?? "rgba(0, 0, 0, 0.30)",
               }}
               disabled
               tabIndex={-1}
@@ -297,3 +290,5 @@ export const Hintput: FC<
     </span>
   );
 };
+
+export default Hintput;
