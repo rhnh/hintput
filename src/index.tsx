@@ -9,7 +9,9 @@ export interface IHintput {
   hintColor?: string;
 }
 
-const Hintput: FC<IHintput & React.InputHTMLAttributes<HTMLInputElement>> = ({
+export const Hintput: FC<
+  IHintput & React.InputHTMLAttributes<HTMLInputElement>
+> = ({
   items,
   placeholder,
   numberOfSuggestions = 5,
@@ -290,5 +292,3 @@ const Hintput: FC<IHintput & React.InputHTMLAttributes<HTMLInputElement>> = ({
     </span>
   );
 };
-
-export default Hintput;
