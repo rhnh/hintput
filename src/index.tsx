@@ -30,12 +30,12 @@ export const Hintput: FC<
   const [tabbed, setTabbed] = useState(false);
   const [hide, setHide] = useState(false);
   const [found, setFound] = useState(true);
-  const [originalText, setOriginalText] = useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inputRefHidden = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (text === "") {
+      setHint("");
       return;
     }
 
@@ -54,7 +54,7 @@ export const Hintput: FC<
         if (hintIndex === 0) {
           setHint(hintArray[0].toLowerCase());
         } else if (hintIndex > 0) {
-          const restHint = hintArray[0]?.substr(0, hintIndex);
+          const restHint = hintArray[0]?.substring(0, hintIndex);
           if (restHint) {
             setText(restHint + text);
           }
@@ -88,29 +88,14 @@ export const Hintput: FC<
 
   const handleBlurInside = (e: React.FocusEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    if (typeof onChange === "function") onChange(e);
     setText(value);
     setHint("");
     setHide(false);
-    setOriginalText("");
     if (typeof onBlur === "function") onBlur(e);
-    if (typeof onChange === "function") onChange(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key.length === 1) {
-      const alphaNum = /[a-z]|[0|9]|\s/;
-      if (alphaNum.test(e.key)) setOriginalText((re) => re + e.key);
-    }
-
-    if (e.code === "Backspace") {
-      setHint("");
-      setHint("");
-      setText(originalText);
-      setOriginalText("");
-      setSuggestions([]);
-      setHide(false);
-      setFound(false);
-    }
     if (e.code === "Tab") {
       if (suggestions.length <= 0) {
         if (hint) setText(hint);
@@ -121,7 +106,6 @@ export const Hintput: FC<
     if (e.code === "Enter") {
       if (hint) {
         setText(hint);
-        // inputRef?.current?.blur();
       }
       setHint("");
       setSuggestions([]);
@@ -143,17 +127,15 @@ export const Hintput: FC<
   };
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
-
+    if (typeof onChange === "function") {
+      onChange(e);
+    }
     if (text.length === 0) {
       setFound(true);
     }
     setHide(true);
     setText(value.toLowerCase());
     setTabbed(true);
-
-    if (typeof onChange === "function") {
-      onChange(e);
-    }
   };
 
   return (
