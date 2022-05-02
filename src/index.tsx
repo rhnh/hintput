@@ -5,7 +5,7 @@ import { findAndSort } from "./utils";
 
 export interface IHintput {
   items: string[];
-  numberOfSuggestions: number;
+  numberOfSuggestions?: number;
   hintColor?: string;
 }
 
@@ -77,7 +77,7 @@ export const Hintput: FC<
           if (isLastWord) {
             return setSuggestions(hintArray.slice(0, numberOfSuggestions));
           }
-          const hintBegging = firstMatch.substr(0, hintIndex);
+          const hintBegging = firstMatch.substring(0, hintIndex);
           const completedWord = hintBegging + text;
           setHint(completedWord);
         }
@@ -93,6 +93,7 @@ export const Hintput: FC<
     setHide(false);
     setOriginalText("");
     if (typeof onBlur === "function") onBlur(e);
+    if (typeof onChange === "function") onChange(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -247,6 +248,8 @@ export const Hintput: FC<
               width: "100%",
               outlineStyle: "none",
               margin: "none",
+              marginLeft: "1px",
+              marginTop: "1px",
               padding: 0,
             }}
           >
