@@ -31,11 +31,13 @@ export const Hintput: FC<
   const [hide, setHide] = useState(false);
   const [found, setFound] = useState(true);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const inputRefHidden = React.useRef<HTMLInputElement>(null);
-
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
   useEffect(() => {
     if (text === "") {
       setHint("");
+      setSuggestions([]);
       return;
     }
 
@@ -160,99 +162,45 @@ export const Hintput: FC<
         onBlur={handleBlurInside}
         onKeyDown={handleKeyDown}
         tabIndex={suggestions.length > 0 ? 1 : 0}
-        style={{
-          border: "1px solid black",
-          ...style,
-          width: "100%",
-          borderWidth: "1px",
-        }}
       />
       {hide && (
-          <span
-            className={`${className} `}
-            ref={inputRefHidden}
+          <input
+            value={hint}
+            className={`${className} hint`}
+            id="#hint"
             style={{
-              display: "flex",
-              pointerEvents: "none",
+              caretColor: "transparent",
               backgroundColor: "transparent",
-              borderColor: "transparent",
-              boxSizing: "border-box",
-              color: hintColor ?? "rgba(0, 0, 0, 0.99)",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              justifyContent: "flex-end",
-              alignItems: "stretch",
+              outline: "none",
               border: "none",
-              width: "100%",
               outlineStyle: "none",
               ...style,
-              margin: "none",
-              padding: 0,
             }}
-          >
-            <input
-              value={hint}
-              className={`${className} hint`}
-              id="#hint"
-              style={{
-                ...style,
-                caretColor: "transparent",
-                backgroundColor: "transparent",
-                outline: "none",
-                width: "100%",
-                border: "none",
-                outlineStyle: "none",
-              }}
-              {...props}
-              disabled
-              tabIndex={-1}
-            />
-          </span>
+            {...props}
+            disabled
+            tabIndex={-1}
+          />
         ) && (
-          <span
-            className={`${className} `}
-            ref={inputRefHidden}
+          <input
+            value={hint}
+            className={`${className} hint`}
+            id="#hint"
             style={{
-              ...style,
-              display: "flex",
-              pointerEvents: "none",
+              caretColor: "transparent",
               backgroundColor: "transparent",
-              borderColor: "transparent",
-              boxSizing: "border-box",
-              color: hintColor ?? "rgba(0, 0, 0, 0.35)",
+              outline: "none",
+              ...style,
+              borderSpacing: inputRef.current?.style.borderSpacing,
               position: "absolute",
               top: 0,
               left: 0,
-              justifyContent: "flex-end",
-              alignItems: "stretch",
-              border: "none",
-              width: "100%",
               outlineStyle: "none",
-              margin: "none",
-              marginLeft: "1px",
-              marginTop: "1px",
-              padding: 0,
+              margin: 0,
+              color: hintColor ?? "rgba(0, 0, 0, 0.30)",
             }}
-          >
-            <input
-              value={hint}
-              className={`${className} hint`}
-              id="#hint"
-              style={{
-                caretColor: "transparent",
-                backgroundColor: "transparent",
-                outline: "none",
-                ...style,
-                width: "100%",
-                border: "none",
-                outlineStyle: "none",
-                color: hintColor ?? "rgba(0, 0, 0, 0.30)",
-              }}
-              disabled
-              tabIndex={-1}
-            />
-          </span>
+            disabled
+            tabIndex={-1}
+          />
         )}
       {tabbed && suggestions.length > 0 && (
         <span id="suggestion-ul" style={{ display: "table" }}>
