@@ -1,14 +1,26 @@
-import React, { useState, useEffect, FC } from "react";
-
-import "./hintput.css";
+import React, { useState, useEffect, FC, CSSProperties } from "react";
 import { findAndSort } from "./utils";
 
 export interface IHintput {
   items: string[];
   numberOfSuggestions?: number;
+  styleOfSuggestions?: Record<string, CSSProperties> | CSSProperties;
+  classNameSuggestions?: string;
+  styleOfList?: Record<string, CSSProperties> | CSSProperties;
+  classNameList?: string;
   hintColor?: string;
 }
-
+/**
+ *
+ * @param items - an Array of strings
+ * @param numberOfSuggestions - How many suggestions (buttons) do you want to see below the input box ?
+ * @param styleOfSuggestions - Style for for suggestions buttons below the input box!
+ * @param classNameSuggestions - A css class name suggestions buttons below the input box.
+ * @param classNameList - A css class name for list of suggestions (buttons) below the input box ?
+ * @param styleOfLists - How would design the list of suggestions below the input box ?
+ * @param hintColor - a color for hint inside the input box.
+ * @returns - Returns an input box which has search capability.
+ */
 export const Hintput: FC<
   IHintput & React.InputHTMLAttributes<HTMLInputElement>
 > = ({
@@ -19,8 +31,10 @@ export const Hintput: FC<
   onChange,
   onBlur,
   className = "",
-  style,
   hintColor,
+  styleOfList,
+  styleOfSuggestions,
+  classNameSuggestions,
   ...props
 }: IHintput &
   React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement => {
@@ -31,6 +45,7 @@ export const Hintput: FC<
   const [hide, setHide] = useState(false);
   const [found, setFound] = useState(true);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { style } = props;
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -119,13 +134,11 @@ export const Hintput: FC<
       setTabbed(false);
     }
   };
+
   const innerStyle = {
-    background: "transparent",
-    border: "none",
-    ":selected, :focused": {
-      border: "none",
-      outline: "1px solid black",
-    },
+    background: classNameSuggestions ?? "transparent",
+    border: classNameSuggestions ?? "none",
+    ...styleOfSuggestions,
   };
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
@@ -141,7 +154,7 @@ export const Hintput: FC<
   };
 
   return (
-    <span
+    <div
       style={{
         position: "relative",
         padding: 0,
@@ -155,6 +168,7 @@ export const Hintput: FC<
         type="text"
         name={name}
         id={name}
+        style={{ ...style }}
         {...props}
         placeholder={placeholder}
         value={text.toLowerCase()}
@@ -174,7 +188,6 @@ export const Hintput: FC<
               outline: "none",
               border: "none",
               outlineStyle: "none",
-              ...style,
             }}
             {...props}
             disabled
@@ -190,12 +203,13 @@ export const Hintput: FC<
               backgroundColor: "transparent",
               outline: "none",
               ...style,
+
               borderSpacing: inputRef.current?.style.borderSpacing,
               position: "absolute",
               top: 0,
               left: 0,
               outlineStyle: "none",
-              margin: 0,
+
               color: hintColor ?? "rgba(0, 0, 0, 0.30)",
             }}
             disabled
@@ -203,7 +217,7 @@ export const Hintput: FC<
           />
         )}
       {tabbed && suggestions.length > 0 && (
-        <span id="suggestion-ul" style={{ display: "table" }}>
+        <span id="suggestion-ul" style={{ display: "table", ...styleOfList }}>
           {suggestions.map((suggestion, i) => (
             <span key={i} style={{ display: "block" }}>
               <button
@@ -215,6 +229,7 @@ export const Hintput: FC<
                 }}
                 tabIndex={i + 2}
                 style={innerStyle}
+                className={classNameSuggestions}
               >
                 {suggestion}
               </button>
@@ -222,6 +237,6 @@ export const Hintput: FC<
           ))}
         </span>
       )}
-    </span>
+    </div>
   );
 };
