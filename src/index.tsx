@@ -4,10 +4,12 @@ import { findAndSort } from "./utils";
 export interface IHintput {
   items: string[];
   numberOfSuggestions?: number;
-  styleOfSuggestions?: Record<string, CSSProperties> | CSSProperties;
-  classNameSuggestions?: string;
-  styleOfList?: Record<string, CSSProperties> | CSSProperties;
-  classNameList?: string;
+  buttonsStyle?: Record<string, CSSProperties> | CSSProperties;
+  buttonsClass?: string;
+  buttonsDiv?: Record<string, CSSProperties> | CSSProperties;
+  listClassName?: string;
+  container?: Record<string, CSSProperties> | CSSProperties;
+  containerClass?: string;
   hintColor?: string;
 }
 /**
@@ -32,9 +34,11 @@ export const Hintput: FC<
   onBlur,
   className = "",
   hintColor,
-  styleOfList,
-  styleOfSuggestions,
-  classNameSuggestions,
+  buttonsDiv,
+  buttonsStyle,
+  buttonsClass,
+  containerClass,
+  container,
   ...props
 }: IHintput &
   React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement => {
@@ -46,6 +50,9 @@ export const Hintput: FC<
   const [found, setFound] = useState(true);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { style } = props;
+
+  const shade = "rgba(0, 0, 0, 0.30)";
+
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -136,9 +143,9 @@ export const Hintput: FC<
   };
 
   const innerStyle = {
-    background: classNameSuggestions ?? "transparent",
-    border: classNameSuggestions ?? "none",
-    ...styleOfSuggestions,
+    background: buttonsClass ?? "transparent",
+    border: buttonsClass ?? "none",
+    ...buttonsStyle,
   };
   const handleChangeInside = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
@@ -160,7 +167,12 @@ export const Hintput: FC<
         padding: 0,
         margin: 0,
         display: "inline-block",
+        width: "100%",
+        boxSizing: "border-box",
+        MozBoxSizing: "border-box",
+        ...container,
       }}
+      className={containerClass}
     >
       <input
         ref={inputRef}
@@ -210,14 +222,14 @@ export const Hintput: FC<
               left: 0,
               outlineStyle: "none",
 
-              color: hintColor ?? "rgba(0, 0, 0, 0.30)",
+              color: hintColor ? hintColor : shade,
             }}
             disabled
             tabIndex={-1}
           />
         )}
       {tabbed && suggestions.length > 0 && (
-        <span id="suggestion-ul" style={{ display: "table", ...styleOfList }}>
+        <span id="suggestion-ul" style={{ display: "table", ...buttonsDiv }}>
           {suggestions.map((suggestion, i) => (
             <span key={i} style={{ display: "block" }}>
               <button
@@ -229,7 +241,7 @@ export const Hintput: FC<
                 }}
                 tabIndex={i + 2}
                 style={innerStyle}
-                className={classNameSuggestions}
+                className={buttonsClass}
               >
                 {suggestion}
               </button>
