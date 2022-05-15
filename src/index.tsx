@@ -11,6 +11,7 @@ export interface IHintput {
   container?: Record<string, CSSProperties> | CSSProperties;
   containerClass?: string;
   hintColor?: string;
+  focused?: boolean;
 }
 /**
  *
@@ -39,11 +40,13 @@ export const Hintput: FC<
   buttonsClass,
   containerClass,
   container,
+
   ...props
 }: IHintput &
   React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement => {
+  const value = (props.value as string) || "";
   const [hint, setHint] = useState("");
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>(value || "");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [tabbed, setTabbed] = useState(false);
   const [hide, setHide] = useState(false);
@@ -56,6 +59,13 @@ export const Hintput: FC<
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (value === "") {
+      setText("");
+    }
+  }, [value]);
+
   useEffect(() => {
     if (text === "") {
       setHint("");
