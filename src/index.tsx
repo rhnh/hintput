@@ -53,12 +53,14 @@ export const Hintput: FC<
   const [found, setFound] = useState(true);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { style } = props;
-
+  const propsWithoutFocus = { ...props };
+  delete propsWithoutFocus.autoFocus;
+  delete propsWithoutFocus.focused;
   const shade = "rgba(0, 0, 0, 0.30)";
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  // useEffect(() => {
+  //   inputRef.current?.focus()
+  // }, [])
 
   useEffect(() => {
     if (value === "") {
@@ -211,7 +213,7 @@ export const Hintput: FC<
               border: "none",
               outlineStyle: "none",
             }}
-            {...props}
+            {...propsWithoutFocus}
             disabled
             tabIndex={-1}
           />
