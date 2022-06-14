@@ -57,9 +57,8 @@ export const Hintput: FC<
   delete propsWithoutFocus.autoFocus;
   delete propsWithoutFocus.focused;
   const shade = "rgba(0, 0, 0, 0.30)";
-
-  const dynamicWidth = style ? "calc(100% - " + 8 + "px)" : "";
-
+  const dynamicWidth = "calc(100% - " + 8 + "px)";
+  const width = style?.width;
   useEffect(() => {
     if (value === "") {
       setText("");
@@ -172,9 +171,10 @@ export const Hintput: FC<
         padding: 0,
         margin: 0,
         display: "inline-block",
-        width: "100%",
+        minWidth: "max-content",
         boxSizing: "border-box",
         MozBoxSizing: "border-box",
+        width,
         ...container,
       }}
       className={containerClass}
@@ -185,7 +185,7 @@ export const Hintput: FC<
         type="text"
         name={name}
         id={name}
-        style={{ ...style, width: dynamicWidth, textAlign: "left" }}
+        style={{ ...style, width: dynamicWidth }}
         {...props}
         placeholder={placeholder}
         value={text.toLowerCase()}
