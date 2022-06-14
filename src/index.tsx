@@ -58,9 +58,7 @@ export const Hintput: FC<
   delete propsWithoutFocus.focused;
   const shade = "rgba(0, 0, 0, 0.30)";
 
-  // useEffect(() => {
-  //   inputRef.current?.focus()
-  // }, [])
+  const dynamicWidth = style ? "calc(100% - " + 8 + "px)" : "";
 
   useEffect(() => {
     if (value === "") {
@@ -97,12 +95,7 @@ export const Hintput: FC<
         }
         setSuggestions([]);
       }
-      /**
-       * hint > 1,
-       * if(hint matched at beginning) just show the hint and remove it from suggestions
-       * if(hint matched at last) don't show hint, and don't remove it from suggestions
-       * if(hint matched in the middle) do show the hint, and remove it from suggestions
-       */
+
       if (hintArray.length > 1) {
         const firstMatch = hintArray[0];
         const hintIndex = firstMatch?.toLowerCase().indexOf(text.toLowerCase());
@@ -192,7 +185,7 @@ export const Hintput: FC<
         type="text"
         name={name}
         id={name}
-        style={{ ...style }}
+        style={{ ...style, width: dynamicWidth, textAlign: "left" }}
         {...props}
         placeholder={placeholder}
         value={text.toLowerCase()}
@@ -212,6 +205,8 @@ export const Hintput: FC<
               outline: "none",
               border: "none",
               outlineStyle: "none",
+              width: dynamicWidth,
+              textAlign: "left",
             }}
             {...propsWithoutFocus}
             disabled
@@ -233,6 +228,8 @@ export const Hintput: FC<
               top: 0,
               left: 0,
               outlineStyle: "none",
+              width: dynamicWidth,
+              textAlign: "left",
 
               color: hintColor ? hintColor : shade,
             }}
