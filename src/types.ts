@@ -1,32 +1,31 @@
-import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
-
-export interface IHintDisplay {
-  inputName: string;
-  placeholder: string;
-  text: string;
-  hint: string;
-  tabbed: boolean;
-  customClass?: string;
-  customStyle?: {
-    [x: string]: string;
-  };
-  suggestions: string[];
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  setSuggestions: Dispatch<SetStateAction<string[]>>;
-  setText: Dispatch<SetStateAction<string>>;
-}
+import { CSSProperties } from "react";
 
 export interface IHintput {
-  name: string;
-  placeholder?: string;
   items: string[];
-  className?: string;
   numberOfSuggestions?: number;
-  style?: {
-    [x: string]: string;
-  };
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  buttonsStyle?: Record<string, CSSProperties> | CSSProperties;
+  buttonsClass?: string;
+  btnContainer?: Record<string, CSSProperties> | CSSProperties;
+  btnContainerClass?: string;
+  container?: Record<string, CSSProperties> | CSSProperties;
+  containerClass?: string;
+  hintColor?: string;
+  focused?: boolean;
+  isInline?: boolean;
+  fadePercentage?: number;
+  textDirection?: "left" | "right";
+}
+
+export interface IAutocomplete {
+  numberOfSuggestions: number;
+  enabled: boolean;
+  addText: (str: string) => void;
+  addSuggestions: (suggestions: string[]) => void;
+  addHint: (str: string) => void;
+  found: boolean;
+  textLength: number;
+  text: string;
+  items: string[];
+  isInline?: boolean;
+  originalText: string;
 }
