@@ -1,10 +1,14 @@
 # Introduction
-> It is an enhanced input field
-
-> In other words: It is a small input field, which give hints and suggestions
 
 > Hints + input  = Hintput
 
+![Inline mode](images/1.gif)
+
+
+![](images/2.gif)
+
+
+![multiple mode](images/3.gif)
 
 # Installation
 > yarn add @ribrary/hintput
@@ -12,7 +16,9 @@
 > npm i  @ribrary/hintput
 
 # Example:
-https://rhnh.github.io/hintput/
+> https://rhnh.github.io/hintput/
+-------------
+> [Source for example](https://github.com/rhnh/hintput-examples) 
 
 # Usage
 use is just like an input box.
@@ -23,45 +29,127 @@ You need to function, if you want to retrieve the value of input
   <p>
         <label htmlFor="favorite">Favorites: </label>
         <Hintput
-          placeholder="favorite" //optional
-          name="favorite"
-          items={items}
-          onChange={handleChange}
-          onChange={handleBlur}
-          numberOfSuggestions={3} //optional
-          hintColor="rgba(0,0,0,0.20)" //optional
-          style={{color:'green',      //optional
-           width: '100%', //optional
-            fontSize: '30px', //optional
-            borderStyle: 'dashed', //optional
-            borderRadius: '19px', //optional
-            padding: '30px',}} //optional { It has  1px default border }
-          className='my-custom-css' //optional   { It has  1px default border }
+          placeholder="favorite" 
+          //This color has be hex. If you want have matching hint color.
+          style={{color:"#2a9d8f"}}
+          items={["James","John","Ali","Sam"]}
         />
 </p>
 ```
 ----------------------------
-An example for regular ```html<input type='text' />```
+# FAQs
+
+### How do I change number of suggestions in multiple mode ?
 ```jsx
-<p>
-        <label htmlFor="favorite">Favorites: </label>
-        <input
-          placeholder="favorite"
-          name="favorite"
+  const items = ['james','john doe', 'jane doe'];
+  <p>
+        <label htmlFor="names">Favorites: </label>
+        <Hintput
+          placeholder="Names" 
           items={items}
-          onChange={handleChange}
-          onBlur={handleBlur}
           numberOfSuggestions={3}
         />
-  </p>
+</p>
+```
+### How do I change color of hint ?
+
+Usually, if you give style={{color:"#ff0033"}}, it selects appropriate color for hint.
+But if you want add your own color. use hintColor
+```jsx
+  const items = ['james','john doe', 'jane doe'];
+  <p>
+        <label htmlFor="favorite">Favorites: </label>
+        <Hintput
+          placeholder="favorite" //optional 
+          items={items}
+          
+        />
+</p>
 ```
 
-## if you want to add your own css.
-```css
-.hint {
-  font-family: monospace; /*one font-family should be existed*/
-  margin: 0;
-  padding: 10px; /* this padding is needed*/
-  box-sizing: border-box;
-}
-``
+
+### How do I increase or decrease opacity of hint color   ?
+```jsx
+  const items = ['james','john doe', 'jane doe'];
+  <p>
+        <label htmlFor="favorite">Favorites: </label>
+        <Hintput
+          placeholder="favorite"
+          items={items}
+          fadePercentage={0.95}
+
+        />
+</p>
+```
+
+### Can I use it for Arabic Text ?
+
+Yes, change textDirection to right
+```jsx
+  const items = ['james','john doe', 'jane doe'];
+  <p>
+        <label htmlFor="favorite">Favorites: </label>
+        <Hintput
+          placeholder="favorite"
+          items={items}
+          textDirection="right"
+        />
+</p>
+```
+
+
+### How do I add custom style ?
+```jsx
+  const items = ['james','john doe', 'jane doe'];
+  <p>
+        <label htmlFor="favorite">Favorites: </label>
+        <Hintput
+          placeholder="favorite"
+          items={items}
+         style={{}}
+        />
+</p>
+```
+Add "btnContainer={{//your styles}}" to change container style for multiple hints.
+```jsx
+  const items = ['james','john doe', 'jane doe'];
+  <p>
+        <label htmlFor="favorite">Favorites: </label>
+        <Hintput
+          placeholder="favorite"
+          items={items}
+         style={{}}
+         container={{}} 
+        />
+</p>
+```
+Add "buttonsStyle={{//your styles}}" to change multiple search buttons
+```jsx
+  const items = ['james','john doe', 'jane doe'];
+  <p>
+        <label htmlFor="favorite">Favorites: </label>
+        <Hintput
+          placeholder="favorite"
+          items={items}
+         style={{}}
+         container={{}} 
+        />
+</p>
+```
+You can also add classes
+ - buttonsClass,
+ - containerClass,
+ - btnContainerClass in multiple
+ - hint-buttons: for buttons in multiple mode
+
+
+You can give own or you these.
+
+for main input
+
+ - hint-put 
+ -  hintput-text 
+ 
+for secondary input
+ - hint-put 
+ - hintput-hint

@@ -39,12 +39,12 @@ export const Hintput: FC<
   buttonsStyle,
   buttonsClass,
   containerClass,
+  btnContainerClass,
   isInline = false,
   container,
   fadePercentage = 0.45,
   textDirection = "left",
   children,
-  btnContainerClass,
   ...props
 }: IHintput &
   React.InputHTMLAttributes<HTMLInputElement>): React.ReactElement => {
@@ -258,7 +258,7 @@ export const Hintput: FC<
           <input
             data-testid="hint-test"
             value={hint}
-            className={`${className} hint-put hintput-text`}
+            className={`${className} hint-put hintput-hint`}
             id="hint"
             style={{
               outline: "unset",
