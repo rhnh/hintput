@@ -1,5 +1,5 @@
 {
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "This is a simple react autocomplete",
   "name": "@ribrary/hintput",
   "main": "dist/cjs/index.js",
