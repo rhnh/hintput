@@ -1,6 +1,6 @@
 {
   "name": "@ribrary/hintput",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "This is a simple react autocomplete",
   "main": "./dist/index.js",
   "module": "dist/index.js",
