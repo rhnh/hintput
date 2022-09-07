@@ -1,5 +1,3 @@
-import { IAutocomplete } from "./types";
-
 /**
  *
  * @param items an Array of string
@@ -24,6 +22,20 @@ export const findAndSort = (items: string[], text: string): string[] =>
         return -1;
       } else return 0;
     });
+
+export interface IAutocomplete {
+  numberOfSuggestions: number;
+  enabled: boolean;
+  addText: (str: string) => void;
+  addSuggestions: (suggestions: string[]) => void;
+  addHint: (str: string) => void;
+  found: boolean;
+  textLength: number;
+  text: string;
+  items: string[];
+  isInline?: boolean;
+  originalText: string;
+}
 
 export const autoComplete = ({
   textLength,

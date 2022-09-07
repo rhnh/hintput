@@ -53,7 +53,7 @@ You need to function, if you want to retrieve the value of input
 ```
 ### How do I change color of hint ?
 
-Usually, if you give style={{color:"#ff0033"}}, it selects appropriate color for hint.
+Usually, it picks automatically, because if you give style={{color:"#ff0033"}}, it selects appropriate color for hint.
 But if you want add your own color. use hintColor
 ```jsx
   const items = ['james','john doe', 'jane doe'];
@@ -62,13 +62,13 @@ But if you want add your own color. use hintColor
         <Hintput
           placeholder="favorite" //optional 
           items={items}
-          
+          hintColor={"#e3e3e3"}
         />
 </p>
 ```
 
 
-### How do I increase or decrease opacity of hint color   ?
+### How do I increase or decrease opacity of hint color ?
 ```jsx
   const items = ['james','john doe', 'jane doe'];
   <p>
@@ -77,7 +77,6 @@ But if you want add your own color. use hintColor
           placeholder="favorite"
           items={items}
           fadePercentage={0.95}
-
         />
 </p>
 ```
@@ -96,7 +95,8 @@ Yes, change textDirection to right
         />
 </p>
 ```
-
+### How to disable the auto complete on the spot ?
+> press shift+Backspace 
 
 ### How do I add custom style ?
 ```jsx
@@ -106,11 +106,12 @@ Yes, change textDirection to right
         <Hintput
           placeholder="favorite"
           items={items}
-         style={{}}
+         style={{color:"#ff000"}}
         />
 </p>
 ```
 Add "btnContainer={{//your styles}}" to change container style for multiple hints.
+
 ```jsx
   const items = ['james','john doe', 'jane doe'];
   <p>
