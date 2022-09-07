@@ -1,13 +1,12 @@
 {
   "name": "@ribrary/hintput",
-  "version": "5.0.6",
+  "version": "6.0.0",
   "description": "This is a simple react autocomplete",
   "main": "./dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "build": "rollup -c"
+    "build": "webpack -c ./webpack.config.ts"
   },
   "keywords": [
     "hint",
